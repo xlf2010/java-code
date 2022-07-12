@@ -8,5 +8,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAccountRsp {
-    private String shortLink;
+    private String accountId;
 }

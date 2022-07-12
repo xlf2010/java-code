@@ -54,7 +54,7 @@
         </javaClientGenerator>
 
         <table tableName="account_info" domainObjectName="AccountInfoDo" mapperName="AccountInfoMapper">
-            <generatedKey column="id" sqlStatement="JDBC"/>
+
             <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
             <columnOverride column = "create_type" property="createType" javaType="java.lang.Integer"/>
         </table>
