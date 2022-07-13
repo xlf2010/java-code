@@ -11,4 +11,14 @@ public enum AccountCreateTypeEnums {
     ;
 
     private final int code;
+
+
+    public static AccountCreateTypeEnums parse(int code) {
+        for (AccountCreateTypeEnums enums : AccountCreateTypeEnums.values()) {
+            if (enums.code == code) {
+                return enums;
+            }
+        }
+        return null;
+    }
 }

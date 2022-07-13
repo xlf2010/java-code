@@ -16,7 +16,18 @@ public enum ErrorCodeEnum {
 
     TOKEN_EXPIRED(2301, "token expire"),
 
-    SHORT_LINK_NOT_EXIST(3301, "short link doesn't exist");;
+    ACCOUNT_NOT_EXIST(3301, "account doesn't exist"),
+
+    DATA_PROCESSING(3302,"data processing"),
+
+    ACCOUNT_STATUS_ERROR(3303, "account status error"),
+
+    RECHARGE_ERROR(3303, "recharge error"),
+
+    WITHDRAW_ERROR(3304, "withdraw error"),
+
+    TRANSACTION_ERROR(3305, "transaction error"),
+    ;
 
     private final int code;
     private final String msg;

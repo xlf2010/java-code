@@ -12,4 +12,13 @@ public enum AccountTypeEnums {
     ;
 
     private final int code;
+
+    public static AccountTypeEnums parse(int code) {
+        for (AccountTypeEnums enums : AccountTypeEnums.values()) {
+            if (enums.code == code) {
+                return enums;
+            }
+        }
+        return null;
+    }
 }
