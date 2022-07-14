@@ -2,6 +2,7 @@ package com.xlf.account.service;
 
 import com.xlf.account.entity.AccountFlowDo;
 import com.xlf.account.entity.AccountInfoDo;
+import com.xlf.account.enums.AccountFlowOperateTypeEnums;
 import com.xlf.account.vo.request.RechargeReq;
 import com.xlf.account.vo.request.TransactionReq;
 import com.xlf.account.vo.request.WithdrawReq;
@@ -14,4 +15,6 @@ public interface AccountFlowService {
     AccountFlowDo withdraw(AccountInfoDo accountInfoDo, WithdrawReq req);
 
     List<AccountFlowDo> transaction(AccountInfoDo fromAccount, AccountInfoDo toAccount, TransactionReq amount);
+
+    AccountFlowDo createDeleteAccount(AccountInfoDo accountInfoDo, String tansId, AccountFlowOperateTypeEnums operateTypeEnums);
 }

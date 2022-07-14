@@ -24,6 +24,8 @@
         <spring.boot.version>2.6.9</spring.boot.version>
         <mybatis.version>2.2.2</mybatis.version>
         <redission.version>3.17.4</redission.version>
+        <mapstruct.version>1.5.2.Final</mapstruct.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 
     <dependencyManagement>
@@ -97,6 +99,12 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${mapstruct.version}</version>
+        </dependency>
+
         <!--        test start-->
         <dependency>
             <groupId>junit</groupId>
@@ -136,6 +144,27 @@
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
+                    <configuration>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>0.2.0</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
@@ -158,10 +187,10 @@
                     <artifactId>maven-site-plugin</artifactId>
                     <version>3.7.1</version>
                 </plugin>
-<!--                <plugin>-->
-<!--                    <artifactId>maven-project-info-reports-plugin</artifactId>-->
-<!--                    <version>3.0.0</version>-->
-<!--                </plugin>-->
+                <!--                <plugin>-->
+                <!--                    <artifactId>maven-project-info-reports-plugin</artifactId>-->
+                <!--                    <version>3.0.0</version>-->
+                <!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>

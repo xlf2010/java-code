@@ -5,10 +5,7 @@ import com.xlf.account.BaseTest;
 import com.xlf.account.enums.AccountCreateTypeEnums;
 import com.xlf.account.enums.AccountTypeEnums;
 import com.xlf.account.enums.CurrencyTypeEnums;
-import com.xlf.account.vo.request.CreateAccountReq;
-import com.xlf.account.vo.request.RechargeReq;
-import com.xlf.account.vo.request.TransactionReq;
-import com.xlf.account.vo.request.WithdrawReq;
+import com.xlf.account.vo.request.*;
 import com.xlf.account.vo.response.CreateAccountRsp;
 import com.xlf.common.response.ApiResult;
 import com.xlf.common.util.JsonUtil;
@@ -19,14 +16,11 @@ import org.springframework.util.Assert;
 
 public class AccountControllerTest extends BaseTest {
 
-    private String userId1 = "U1657678518703";
-    private String userId2 = "U1657711042817";
-
-
     @Test
     public void testCreateAccount() throws Exception {
         CreateAccountReq req = new CreateAccountReq();
-        req.setUserId(userId1);
+        req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
+        req.setUserId(userId2);
         req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setAccountName("name" + System.currentTimeMillis());
         req.setUserName("test user name");
@@ -62,7 +56,7 @@ public class AccountControllerTest extends BaseTest {
     @Test
     public void testWithdraw() throws Exception {
         WithdrawReq req = new WithdrawReq();
-        req.setUserId(userId1);
+        req.setUserId(userId2);
         req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
         req.setAmount(100L);
@@ -89,5 +83,21 @@ public class AccountControllerTest extends BaseTest {
         ApiResult<Object> rsp = JsonUtil.fromJson(json, new TypeReference<ApiResult<Object>>() {
         });
         Assert.notNull(rsp, "rsp can't be null");
+    }
+
+    @Test
+    public void testDeleteAccount() throws Exception {
+        DeleteAccountReq req = new DeleteAccountReq();
+        req.setUserId(userId2);
+        req.setAccountType(AccountTypeEnums.NORMAL.getCode());
+        req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
+        String url = "/account/delete";
+        String json = postJson(url, JsonUtil.toJsonString(req));
+
+        ApiResult<Object> rsp = JsonUtil.fromJson(json, new TypeReference<ApiResult<Object>>() {
+        });
+        Assert.notNull(rsp, "rsp can't be null");
+
+        Thread.sleep(10 * 1000);
     }
 }

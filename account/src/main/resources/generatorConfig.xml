@@ -57,7 +57,16 @@
             <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
             <columnOverride column = "create_type" property="createType" javaType="java.lang.Integer"/>
         </table>
+        <table tableName="account_info_bak" domainObjectName="AccountInfoBakDo" mapperName="AccountInfoBakMapper">
+            <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
+            <columnOverride column = "create_type" property="createType" javaType="java.lang.Integer"/>
+        </table>
         <table tableName="account_flow" domainObjectName="AccountFlowDo" mapperName="AccountFlowMapper">
+            <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
+            <columnOverride column = "to_account_type" property="toAccountType" javaType="java.lang.Integer"/>
+            <columnOverride column = "operate_type" property="operateType" javaType="java.lang.Integer"/>
+        </table>
+        <table tableName="account_flow_bak" domainObjectName="AccountFlowBakDo" mapperName="AccountFlowBakMapper">
             <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
             <columnOverride column = "to_account_type" property="toAccountType" javaType="java.lang.Integer"/>
             <columnOverride column = "operate_type" property="operateType" javaType="java.lang.Integer"/>

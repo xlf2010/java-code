@@ -4,10 +4,12 @@ import com.xlf.account.entity.AccountFlowDo;
 import com.xlf.account.entity.AccountInfoDo;
 import com.xlf.account.enums.AccountFlowOperateTypeEnums;
 import com.xlf.account.service.AccountFlowService;
+import com.xlf.account.vo.request.DeleteAccountReq;
 import com.xlf.account.vo.request.RechargeReq;
 import com.xlf.account.vo.request.TransactionReq;
 import com.xlf.account.vo.request.WithdrawReq;
 import com.xlf.common.util.SnowflakeUtil;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -84,5 +86,20 @@ public class AccountFlowServiceImpl implements AccountFlowService {
         retList.add(accountFlow);
 
         return retList;
+    }
+
+    @Override
+    public AccountFlowDo createDeleteAccount(AccountInfoDo accountInfoDo, String tansId, AccountFlowOperateTypeEnums operateTypeEnums) {
+        AccountFlowDo accountFlow = new AccountFlowDo();
+        accountFlow.setFlowId(SnowflakeUtil.nextId());
+        accountFlow.setAccountId(accountInfoDo.getId());
+        accountFlow.setUserId(accountInfoDo.getUserId());
+        accountFlow.setAccountType(accountInfoDo.getAccountType());
+        accountFlow.setTransId(tansId);
+        accountFlow.setOperateType(operateTypeEnums.getCode());
+        accountFlow.setCurrencyType(accountInfoDo.getCurrencyType());
+        accountFlow.setBalance(accountInfoDo.getBalance());
+        accountFlow.setFrozenBalance(accountFlow.getFrozenBalance());
+        return accountFlow;
     }
 }

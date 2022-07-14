@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/account")
-public class AccountController {
+public class AccountInfoController {
 
     @Resource
     private AccountService accountService;

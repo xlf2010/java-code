@@ -72,6 +72,9 @@ public class ReqRspAspect {
         }
         List<Object> objects = new ArrayList<>(arguments.length);
         for (Object arg : arguments) {
+            if (arg == null) {
+                continue;
+            }
             if (HttpServletRequest.class.isAssignableFrom(arg.getClass())) {
                 continue;
             }

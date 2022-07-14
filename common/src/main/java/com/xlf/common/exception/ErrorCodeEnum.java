@@ -27,6 +27,9 @@ public enum ErrorCodeEnum {
     WITHDRAW_ERROR(3304, "withdraw error"),
 
     TRANSACTION_ERROR(3305, "transaction error"),
+
+    ACCOUNT_HAS_BALANCE(3306,"account has balance"),
+
     ;
 
     private final int code;

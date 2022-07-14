@@ -19,13 +19,12 @@
     <result column="create_type" jdbcType="TINYINT" property="createType" />
     <result column="create_by" jdbcType="VARCHAR" property="createBy" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_by" jdbcType="VARCHAR" property="updateBy" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <sql id="Base_Column_List">
     id, user_id, user_name, account_name, account_type, balance, frozen_balance, currency_type,
-    `status`, create_type, create_by, create_time, update_by, update_time
+    `status`, create_type, create_by, create_time, update_time
   </sql>
 
     <select id="queryAccountInfoForUpdate" resultMap="BaseResultMap">
