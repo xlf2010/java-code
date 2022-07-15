@@ -18,9 +18,17 @@ public class AccountControllerTest extends BaseTest {
 
     @Test
     public void testCreateAccount() throws Exception {
+        deleteAccount(userId1);
+        deleteAccount(userId2);
+
+        createAccount(userId1);
+        createAccount(userId2);
+    }
+
+    private void createAccount(String userId) throws Exception {
         CreateAccountReq req = new CreateAccountReq();
         req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
-        req.setUserId(userId2);
+        req.setUserId(userId);
         req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setAccountName("name" + System.currentTimeMillis());
         req.setUserName("test user name");
@@ -42,7 +50,6 @@ public class AccountControllerTest extends BaseTest {
     public void testRecharge() throws Exception {
         RechargeReq req = new RechargeReq();
         req.setUserId(userId1);
-        req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
         req.setAmount(1100L);
         String url = "/account/recharge";
@@ -56,11 +63,40 @@ public class AccountControllerTest extends BaseTest {
     @Test
     public void testWithdraw() throws Exception {
         WithdrawReq req = new WithdrawReq();
+        req.setUserId(userId1);
+        req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
+        req.setAmount(100L);
+        String url = "/account/withdraw";
+        String json = postJson(url, JsonUtil.toJsonString(req));
+
+        ApiResult<Object> rsp = JsonUtil.fromJson(json, new TypeReference<ApiResult<Object>>() {
+        });
+        Assert.notNull(rsp, "rsp can't be null");
+    }
+
+    @Test
+    public void testFrozen() throws Exception {
+        FrozenReq req = new FrozenReq();
         req.setUserId(userId2);
         req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
         req.setAmount(100L);
-        String url = "/account/withdraw";
+        String url = "/account/frozen";
+        String json = postJson(url, JsonUtil.toJsonString(req));
+
+        ApiResult<Object> rsp = JsonUtil.fromJson(json, new TypeReference<ApiResult<Object>>() {
+        });
+        Assert.notNull(rsp, "rsp can't be null");
+    }
+
+    @Test
+    public void testUnfrozen() throws Exception {
+        UnfrozenReq req = new UnfrozenReq();
+        req.setUserId(userId1);
+        req.setAccountType(AccountTypeEnums.NORMAL.getCode());
+        req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
+        req.setAmount(100L);
+        String url = "/account/unfrozen";
         String json = postJson(url, JsonUtil.toJsonString(req));
 
         ApiResult<Object> rsp = JsonUtil.fromJson(json, new TypeReference<ApiResult<Object>>() {
@@ -75,7 +111,8 @@ public class AccountControllerTest extends BaseTest {
         req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setToUserId(userId2);
         req.setToAccountType(AccountTypeEnums.NORMAL.getCode());
-        req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
+//        req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
+        req.setTransId("1709977228283904");
         req.setAmount(100L);
         String url = "/account/transaction";
         String json = postJson(url, JsonUtil.toJsonString(req));
@@ -87,8 +124,13 @@ public class AccountControllerTest extends BaseTest {
 
     @Test
     public void testDeleteAccount() throws Exception {
+        deleteAccount(userId1);
+        deleteAccount(userId2);
+    }
+
+    private void deleteAccount(String userId) throws Exception {
         DeleteAccountReq req = new DeleteAccountReq();
-        req.setUserId(userId2);
+        req.setUserId(userId);
         req.setAccountType(AccountTypeEnums.NORMAL.getCode());
         req.setTransId(String.valueOf(SnowflakeUtil.nextId()));
         String url = "/account/delete";
@@ -97,7 +139,8 @@ public class AccountControllerTest extends BaseTest {
         ApiResult<Object> rsp = JsonUtil.fromJson(json, new TypeReference<ApiResult<Object>>() {
         });
         Assert.notNull(rsp, "rsp can't be null");
-
-        Thread.sleep(10 * 1000);
+        Thread.sleep(5 * 1000);
     }
+
+
 }

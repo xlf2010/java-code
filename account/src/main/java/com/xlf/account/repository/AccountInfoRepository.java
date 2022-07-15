@@ -7,8 +7,6 @@ import com.xlf.account.enums.AccountStatusEnums;
 import com.xlf.account.repository.mapper.AccountInfoBakMapper;
 import com.xlf.account.repository.mapper.AccountInfoExtMapper;
 import com.xlf.account.repository.mapper.AccountInfoMapper;
-import com.xlf.account.vo.request.TransactionReq;
-import com.xlf.common.exception.BusinessException;
 import com.xlf.common.exception.ErrorCodeEnum;
 import org.springframework.stereotype.Repository;
 
@@ -66,5 +64,19 @@ public class AccountInfoRepository {
     public void deleteAccount(AccountInfoDo accountInfoDo, AccountInfoBakDo accountInfoBakDo) {
         accountInfoBakMapper.insertSelective(accountInfoBakDo);
         accountInfoMapper.deleteByPrimaryKey(accountInfoDo.getId());
+    }
+
+    public void frozen(Long accountId, Long amount) {
+        int rowAffected = accountInfoExtMapper.frozen(accountId, amount);
+        if (rowAffected != 1) {
+            throw ErrorCodeEnum.FROZEN_ERROR.newException();
+        }
+    }
+
+    public void unfrozen(Long accountId, Long amount) {
+        int rowAffected = accountInfoExtMapper.unfrozen(accountId, amount);
+        if (rowAffected != 1) {
+            throw ErrorCodeEnum.UNFROZEN_ERROR.newException();
+        }
     }
 }

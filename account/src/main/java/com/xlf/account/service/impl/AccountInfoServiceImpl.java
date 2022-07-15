@@ -54,6 +54,7 @@ public class AccountInfoServiceImpl implements AccountInfoService {
         return accountInfo.getId();
     }
 
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public AccountInfoDo deleteAccount(DeleteAccountReq req) {
@@ -62,7 +63,7 @@ public class AccountInfoServiceImpl implements AccountInfoService {
             return null;
         }
         if (accountInfoDo.getBalance() > 0 || accountInfoDo.getFrozenBalance() > 0) {
-            throw new BusinessException(ErrorCodeEnum.ACCOUNT_HAS_BALANCE.getCode(), "account still has balance or frozen balance,please withdraw");
+            throw new BusinessException(ErrorCodeEnum.ACCOUNT_HAS_BALANCE_ERROR.getCode(), "account still has balance or frozen balance,please withdraw");
         }
         if (accountInfoDo.getStatus() != AccountStatusEnums.VALID.getCode()) {
             throw new BusinessException(ErrorCodeEnum.ACCOUNT_STATUS_ERROR.getCode(), "account status not valid");

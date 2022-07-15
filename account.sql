@@ -80,3 +80,35 @@ CREATE TABLE if not exists account_flow_bak (
   KEY idx_to_account_id (to_account_id),
   KEY idx_transId_operateType (trans_id,operate_type)
 ) ENGINE=InnoDB comment 'backup account flow while accout was deleted';
+
+
+CREATE TABLE if not exists frozen_account (
+  trans_id bigint NOT NULL,
+  account_id bigint NOT NULL,
+  user_id varchar(32) NOT NULL,
+  account_type tinyint NOT NULL,
+  frozen_balance bigint NOT NULL DEFAULT '0' COMMENT '',
+  currency_type varchar(32) NOT NULL,
+  create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  update_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (trans_id),
+  KEY idx_account_id (account_id),
+  KEY idx_user_id_account_type (user_id,account_type),
+) ENGINE=InnoDB ;
+
+CREATE TABLE if not exists frozen_account_flow (
+  flow_id bigint NOT NULL,
+  account_id bigint NOT NULL,
+  user_id varchar(32) NOT NULL,
+  account_type tinyint NOT NULL,
+  trans_id varchar(64) NOT NULL COMMENT 'transation id',
+  operate_type tinyint NOT NULL COMMENT '1-frozen,2-unfrozen',
+  origin_trans_id bigint not null default '' comment 'when unfrozen,need origin frozen id',
+  frozen_balance bigint NOT NULL DEFAULT '0' COMMENT '',
+  currency_type varchar(32) NOT NULL,
+  create_time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (flow_id),
+  KEY idx_account_id (account_id),
+  KEY idx_user_id_account_type (user_id,account_type),
+  KEY idx_transId_operateType (trans_id,operate_type)
+) ENGINE=InnoDB ;

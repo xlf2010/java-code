@@ -12,11 +12,6 @@ public class RechargeReq {
     private String transId;
     @NotBlank(message = "userId can't be blank")
     private String userId;
-    /**
-     * accountType Enum com.xlf.account.enums.AccountTypeEnums
-     */
-    @NotNull(message = "accountType can't be null")
-    private Integer accountType;
 
     @NotNull(message = "amount can't be null")
     @Min(value = 1, message = "recharge amount must be greater 0")

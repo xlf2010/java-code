@@ -76,8 +76,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void recharge(RechargeReq req) {
-        checkAccountEnums(req.getAccountType(), null, null);
-        String lockKey = String.format("recharge:%s:%s:%d", req.getTransId(), req.getUserId(), req.getAccountType());
+        String lockKey = String.format("recharge:%s:%s:%d", req.getTransId(), req.getUserId(), AccountTypeEnums.NORMAL.getCode());
         redisLockService.runInRedisLock(lockKey, () -> {
             if (dontHasFlowSuccess(req.getTransId(), AccountFlowOperateTypeEnums.RECHARGE)) {
                 accountBalanceService.recharge(req);
@@ -88,8 +87,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void withdraw(WithdrawReq req) {
-        checkAccountEnums(req.getAccountType(), null, null);
-        String lockKey = String.format("withdraw:%s:%s:%d", req.getTransId(), req.getUserId(), req.getAccountType());
+        String lockKey = String.format("withdraw:%s:%s:%d", req.getTransId(), req.getUserId(), AccountTypeEnums.NORMAL.getCode());
         redisLockService.runInRedisLock(lockKey, () -> {
             if (dontHasFlowSuccess(req.getTransId(), AccountFlowOperateTypeEnums.WITHDRAW)) {
                 accountBalanceService.withdraw(req);
@@ -112,6 +110,28 @@ public class AccountServiceImpl implements AccountService {
         redisLockService.runInRedisLock(lockKey, () -> {
             if (dontHasFlowSuccess(req.getTransId(), AccountFlowOperateTypeEnums.TRANSACTION_OUT)) {
                 accountBalanceService.transaction(req);
+            }
+            return null;
+        });
+    }
+
+    @Override
+    public void frozen(FrozenReq req) {
+        String lockKey = String.format("frozen:%s:%s:%d", req.getTransId(), req.getUserId(), AccountTypeEnums.NORMAL.getCode());
+        redisLockService.runInRedisLock(lockKey, () -> {
+            if (dontHasFlowSuccess(req.getTransId(), AccountFlowOperateTypeEnums.WITHDRAW)) {
+                accountBalanceService.frozen(req);
+            }
+            return null;
+        });
+    }
+
+    @Override
+    public void unfrozen(UnfrozenReq req) {
+        String lockKey = String.format("unfrozen:%s:%s:%d", req.getTransId(), req.getUserId(), AccountTypeEnums.NORMAL.getCode());
+        redisLockService.runInRedisLock(lockKey, () -> {
+            if (dontHasFlowSuccess(req.getTransId(), AccountFlowOperateTypeEnums.WITHDRAW)) {
+                accountBalanceService.unfrozen(req);
             }
             return null;
         });
@@ -161,6 +181,11 @@ public class AccountServiceImpl implements AccountService {
 
     private boolean dontHasFlowSuccess(String transId, AccountFlowOperateTypeEnums operateTypeEnums) {
         List<AccountFlowDo> accountFlowDos = accountFlowRepository.queryByTransIdOperateType(transId, operateTypeEnums.getCode());
-        return CollectionUtils.isEmpty(accountFlowDos);
+
+        boolean dontHasRecord = CollectionUtils.isEmpty(accountFlowDos);
+        if (!dontHasRecord) {
+            log.info("transId:{},operateType:{} has been execute successfully", transId, operateTypeEnums);
+        }
+        return dontHasRecord;
     }
 }

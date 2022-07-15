@@ -40,4 +40,20 @@
           and status = 1
         <![CDATA[ and balance + #{amount} >= 0]]>
   </update>
+  <update id="frozen">
+    update account_info
+    set balance = balance - #{amount},
+        frozen_balance = frozen_balance + #{amount}
+    where id = #{accountId}
+      and status = 1
+        <![CDATA[ and balance - #{amount} >= 0]]>
+  </update>
+  <update id="unfrozen">
+    update account_info
+    set balance = balance + #{amount},
+        frozen_balance = frozen_balance - #{amount}
+    where id = #{accountId}
+      and status = 1
+        <![CDATA[ and frozen_balance - #{amount} >= 0]]>
+  </update>
 </mapper>

@@ -42,6 +42,18 @@ public class AccountInfoController {
         return ApiResult.success();
     }
 
+    @PostMapping("/frozen")
+    public ApiResult<Object> frozen(@RequestBody @Valid FrozenReq req) {
+        accountService.frozen(req);
+        return ApiResult.success();
+    }
+
+    @PostMapping("/unfrozen")
+    public ApiResult<Object> unfrozen(@RequestBody @Valid UnfrozenReq req) {
+        accountService.unfrozen(req);
+        return ApiResult.success();
+    }
+
     @PostMapping("/delete")
     public ApiResult<Object> deleteAccount(@RequestBody @Valid DeleteAccountReq req) {
         accountService.deleteAccount(req);

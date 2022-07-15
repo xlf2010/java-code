@@ -12,5 +12,9 @@ public interface AccountService {
 
     void transaction(TransactionReq req);
 
+    void frozen(FrozenReq req);
+
+    void unfrozen(UnfrozenReq req);
+
     void deleteAccount(DeleteAccountReq req);
 }

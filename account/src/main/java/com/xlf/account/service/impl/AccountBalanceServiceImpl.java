@@ -3,13 +3,12 @@ package com.xlf.account.service.impl;
 import com.xlf.account.entity.AccountFlowDo;
 import com.xlf.account.entity.AccountInfoDo;
 import com.xlf.account.enums.AccountStatusEnums;
+import com.xlf.account.enums.AccountTypeEnums;
 import com.xlf.account.repository.AccountFlowRepository;
 import com.xlf.account.repository.AccountInfoRepository;
 import com.xlf.account.service.AccountBalanceService;
 import com.xlf.account.service.AccountFlowService;
-import com.xlf.account.vo.request.RechargeReq;
-import com.xlf.account.vo.request.TransactionReq;
-import com.xlf.account.vo.request.WithdrawReq;
+import com.xlf.account.vo.request.*;
 import com.xlf.common.exception.ErrorCodeEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +32,7 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void recharge(RechargeReq req) {
-        AccountInfoDo accountInfoDo = queryAccountInfoForUpdate(req.getUserId(), req.getAccountType());
+        AccountInfoDo accountInfoDo = queryAccountInfoForUpdate(req.getUserId(), AccountTypeEnums.NORMAL.getCode());
 
         boolean recharge = accountInfoRepository.recharge(accountInfoDo.getId(), req.getAmount());
         if (!recharge) {
@@ -47,7 +46,10 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void withdraw(WithdrawReq req) {
-        AccountInfoDo accountInfoDo = queryAccountInfoForUpdate(req.getUserId(), req.getAccountType());
+        AccountInfoDo accountInfoDo = queryAccountInfoForUpdate(req.getUserId(), AccountTypeEnums.NORMAL.getCode());
+        if (accountInfoDo.getBalance() < req.getAmount()) {
+            throw ErrorCodeEnum.BALANCE_NOT_ENOUGH_EXIST_ERROR.newException();
+        }
 
         boolean withdraw = accountInfoRepository.withdraw(accountInfoDo.getId(), req.getAmount());
         if (!withdraw) {
@@ -72,9 +74,35 @@ public class AccountBalanceServiceImpl implements AccountBalanceService {
             fromAccount = queryAccountInfoForUpdate(req.getUserId(), req.getToAccountType());
         }
 
+        if (fromAccount.getBalance() < req.getAmount()) {
+            throw ErrorCodeEnum.BALANCE_NOT_ENOUGH_EXIST_ERROR.newException();
+        }
+
         accountInfoRepository.transaction(fromAccount, toAccount, req.getAmount());
         List<AccountFlowDo> accountFlowDos = accountFlowService.transaction(fromAccount, toAccount, req);
         accountFlowRepository.insertBatch(accountFlowDos);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void frozen(FrozenReq req) {
+        AccountInfoDo accountInfoDo = queryAccountInfoForUpdate(req.getUserId(), req.getAccountType());
+        if (accountInfoDo.getBalance() < req.getAmount()) {
+            throw ErrorCodeEnum.BALANCE_NOT_ENOUGH_EXIST_ERROR.newException();
+        }
+        accountInfoRepository.frozen(accountInfoDo.getId(), req.getAmount());
+        accountFlowRepository.insert(accountFlowService.frozen(accountInfoDo, req));
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void unfrozen(UnfrozenReq req) {
+        AccountInfoDo accountInfoDo = queryAccountInfoForUpdate(req.getUserId(), req.getAccountType());
+        if (accountInfoDo.getFrozenBalance() < req.getAmount()) {
+            throw ErrorCodeEnum.FROZEN_BALANCE_NOT_ENOUGH_EXIST_ERROR.newException();
+        }
+        accountInfoRepository.unfrozen(accountInfoDo.getId(), req.getAmount());
+        accountFlowRepository.insert(accountFlowService.unfrozen(accountInfoDo, req));
     }
 
     private AccountInfoDo queryAccountInfoForUpdate(String userId, Integer accountType) {

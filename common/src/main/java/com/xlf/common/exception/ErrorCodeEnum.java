@@ -28,8 +28,15 @@ public enum ErrorCodeEnum {
 
     TRANSACTION_ERROR(3305, "transaction error"),
 
-    ACCOUNT_HAS_BALANCE(3306,"account has balance"),
+    ACCOUNT_HAS_BALANCE_ERROR(3306,"account has balance"),
 
+    BALANCE_NOT_ENOUGH_EXIST_ERROR(3307, "balance not enough"),
+
+    FROZEN_BALANCE_NOT_ENOUGH_EXIST_ERROR(3308, "frozen balance not enough"),
+
+    FROZEN_ERROR(3309, "frozen error"),
+
+    UNFROZEN_ERROR(3310, "unfrozen error"),
     ;
 
     private final int code;
