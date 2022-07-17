@@ -6,7 +6,7 @@ public enum ErrorCodeEnum {
 
     SUCCESS(0, "success"),
 
-    SERVICE_BUSY_ERROR(1000, "service business,please try again later"),
+    SERVICE_BUSY_ERROR(1000, "lock business,please try again later"),
 
     REQUEST_PARAMS_FAIL(1001, "params error"),
 

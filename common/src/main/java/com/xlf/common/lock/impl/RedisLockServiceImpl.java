@@ -1,8 +1,8 @@
-package com.xlf.trade.service.impl;
+package com.xlf.common.lock.impl;
 
-import com.xlf.trade.service.RedisLockExecutor;
-import com.xlf.trade.service.RedisLockService;
 import com.xlf.common.exception.ErrorCodeEnum;
+import com.xlf.common.lock.RedisLockExecutor;
+import com.xlf.common.lock.RedisLockService;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;

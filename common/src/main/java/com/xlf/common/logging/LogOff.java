@@ -1,4 +1,4 @@
-package com.xlf.trade.logging;
+package com.xlf.common.logging;
 
 import java.lang.annotation.*;
 

@@ -1,4 +1,4 @@
-package com.xlf.trade.service;
+package com.xlf.common.lock;
 
 public interface RedisLockExecutor<T> {
     T execute();

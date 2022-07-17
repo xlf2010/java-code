@@ -20,9 +20,9 @@ import javax.annotation.Resource;
 import java.util.Map;
 import java.util.Objects;
 
-@SpringBootTest(classes = AccountApplication.class)
+@SpringBootTest(classes = TradeApplication.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class BaseTest {
+public class TradeBaseTest {
     protected String userId1 = "U1657678518703";
     protected String userId2 = "U1657711042817";
 

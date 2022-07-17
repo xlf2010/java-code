@@ -1,4 +1,4 @@
-package com.xlf.trade.job;
+package com.xlf.trade.task;
 
 import com.xlf.trade.service.AccountService;
 import lombok.extern.slf4j.Slf4j;

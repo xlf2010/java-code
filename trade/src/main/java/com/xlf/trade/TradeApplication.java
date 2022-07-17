@@ -13,10 +13,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @MapperScan("com.xlf.trade.repository.mapper")
-@ComponentScan(basePackages = "com.xlf")
 @EnableScheduling
-public class Application {
+@ComponentScan(basePackages = "com.xlf")
+public class TradeApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(TradeApplication.class, args);
     }
 }

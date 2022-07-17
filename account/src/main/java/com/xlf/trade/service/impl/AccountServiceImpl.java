@@ -1,5 +1,6 @@
 package com.xlf.trade.service.impl;
 
+import com.xlf.common.lock.RedisLockService;
 import com.xlf.trade.entity.AccountFlowBakDo;
 import com.xlf.trade.entity.AccountFlowDo;
 import com.xlf.trade.entity.AccountInfoBakDo;
@@ -11,7 +12,6 @@ import com.xlf.trade.repository.AccountInfoRepository;
 import com.xlf.trade.service.AccountBalanceService;
 import com.xlf.trade.service.AccountInfoService;
 import com.xlf.trade.service.AccountService;
-import com.xlf.trade.service.RedisLockService;
 import com.xlf.trade.vo.request.*;
 import com.xlf.trade.vo.response.CreateAccountRsp;
 import com.xlf.common.exception.BusinessException;

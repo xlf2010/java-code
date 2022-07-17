@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <context id="account" targetRuntime="MyBatis3">
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+
+        <commentGenerator>
+            <property name="suppressDate" value="false"/>
+            <property name="dateFormat" value="yyyy-MM-dd"/>
+            <property name="addRemarkComments" value="true"/>
+            <property name="suppressAllComments" value="false"/>
+        </commentGenerator>
+
+
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/trade?useUnicode=true&amp;characterEncoding=UTF-8"
+                        userId="root" password="123456">
+        </jdbcConnection>
+        <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        <!-- java type resolver -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        <!-- gem entity -->
+        <javaModelGenerator targetPackage="com.xlf.trade.entity"
+                            targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+        <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        <!-- gem sq1 map -->
+        <sqlMapGenerator targetPackage="."
+                         targetProject="./src/main/resources/mappers">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+        <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        <!-- gem  mapper -->
+        <javaClientGenerator type="XMLMAPPER"
+                             targetPackage="com.xlf.trade.repository.mapper"
+                             targetProject="./src/main/java">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <table tableName="pay_order" domainObjectName="PayOrderDo" mapperName="PayOrderMapper">
+            <columnOverride column = "pay_channel" property="PayChannel" javaType="java.lang.Integer"/>
+            <columnOverride column = "operate_type" property="operateType" javaType="java.lang.Integer"/>
+        </table>
+    </context>
+</generatorConfiguration>
