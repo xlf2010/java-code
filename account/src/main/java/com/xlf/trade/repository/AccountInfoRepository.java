@@ -1,0 +1,117 @@
+package com.xlf.trade.repository;
+
+import com.xlf.trade.entity.AccountInfoBakDo;
+import com.xlf.trade.entity.AccountInfoBakDoExample;
+import com.xlf.trade.entity.AccountInfoDo;
+import com.xlf.trade.entity.AccountInfoDoExample;
+import com.xlf.trade.enums.AccountStatusEnums;
+import com.xlf.trade.repository.mapper.AccountInfoBakMapper;
+import com.xlf.trade.repository.mapper.AccountInfoExtMapper;
+import com.xlf.trade.repository.mapper.AccountInfoMapper;
+import com.xlf.common.exception.ErrorCodeEnum;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.springframework.stereotype.Repository;
+
+import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
+
+@Repository
+public class AccountInfoRepository {
+    @Resource
+    private AccountInfoMapper accountInfoMapper;
+    @Resource
+    private AccountInfoExtMapper accountInfoExtMapper;
+    @Resource
+    private AccountInfoBakMapper accountInfoBakMapper;
+
+    public void createAccount(AccountInfoDo accountInfoDo) {
+        accountInfoMapper.insertSelective(accountInfoDo);
+    }
+
+    public AccountInfoDo queryByUserIdAccountTypeForUpdate(String userId, Integer accountType) {
+        return accountInfoExtMapper.queryAccountInfoForUpdate(userId, accountType);
+    }
+
+    public List<AccountInfoDo> queryByUserIdAccountType(String userId, Integer accountType) {
+        AccountInfoDoExample example = new AccountInfoDoExample();
+        AccountInfoDoExample.Criteria criteria = example.createCriteria()
+                .andUserIdEqualTo(userId)
+                .andStatusEqualTo(AccountStatusEnums.VALID.getCode());
+        if (Objects.nonNull(accountType)) {
+            criteria.andAccountTypeEqualTo(accountType);
+        }
+        return accountInfoMapper.selectByExample(example);
+    }
+
+    public boolean recharge(Long accountId, Long amount) {
+        return accountInfoExtMapper.incrBalance(accountId, amount) == 1;
+    }
+
+    public boolean withdraw(Long accountId, Long amount) {
+        return accountInfoExtMapper.incrBalance(accountId, -amount) == 1;
+    }
+
+    public void transaction(AccountInfoDo fromAccount, AccountInfoDo toAccount, Long amount) {
+        int rowAffected = accountInfoExtMapper.incrBalance(fromAccount.getId(), -amount);
+        if (rowAffected != 1) {
+            throw ErrorCodeEnum.TRANSACTION_ERROR.newException();
+        }
+        rowAffected = accountInfoExtMapper.incrBalance(toAccount.getId(), amount);
+        if (rowAffected != 1) {
+            throw ErrorCodeEnum.TRANSACTION_ERROR.newException();
+        }
+    }
+
+    public void deleteAccount(AccountInfoDo accountInfoDo, AccountInfoBakDo accountInfoBakDo) {
+        accountInfoBakMapper.insertSelective(accountInfoBakDo);
+        accountInfoMapper.deleteByPrimaryKey(accountInfoDo.getId());
+    }
+
+    public void frozen(Long accountId, Long amount) {
+        int rowAffected = accountInfoExtMapper.frozen(accountId, amount);
+        if (rowAffected != 1) {
+            throw ErrorCodeEnum.FROZEN_ERROR.newException();
+        }
+    }
+
+    public void unfrozen(Long accountId, Long amount) {
+        int rowAffected = accountInfoExtMapper.unfrozen(accountId, amount);
+        if (rowAffected != 1) {
+            throw ErrorCodeEnum.UNFROZEN_ERROR.newException();
+        }
+    }
+
+    public List<AccountInfoBakDo> queryYesterdayAccountInfoBackup(Long startId, Integer limit) {
+        LocalDateTime yesterdayStart = LocalDate.now().minusDays(1).atTime(0, 0, 0);
+        LocalDateTime yesterdayEnd = LocalDate.now().minusDays(1).atTime(23, 59, 59);
+
+        AccountInfoBakDoExample example = new AccountInfoBakDoExample();
+        example.createCriteria().andIdGreaterThan(startId).andUpdateTimeBetween(
+                Date.from(yesterdayStart.atZone(ZoneId.systemDefault()).toInstant()),
+                Date.from(yesterdayEnd.atZone(ZoneId.systemDefault()).toInstant())
+        );
+        example.setOrderByClause(" id limit " + limit);
+        return accountInfoBakMapper.selectByExample(example);
+    }
+
+    public AccountInfoBakDo queryAccountInfoBakDo(Long accountId) {
+        return accountInfoBakMapper.selectByPrimaryKey(accountId);
+    }
+
+    public boolean updateBakupFlowStatus(Long accountId, Integer fromStatus, Integer toStatus) {
+        AccountInfoBakDo accountInfoBakDo = new AccountInfoBakDo();
+        accountInfoBakDo.setBackupFlowStatus(toStatus);
+
+        AccountInfoBakDoExample example = new AccountInfoBakDoExample();
+        example.createCriteria().andIdEqualTo(accountId).andBackupFlowStatusEqualTo(fromStatus);
+
+        return accountInfoBakMapper.updateByExample(accountInfoBakDo, example) == 1;
+    }
+}

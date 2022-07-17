@@ -34,7 +34,7 @@
 
         <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
         <!-- gem entity -->
-        <javaModelGenerator targetPackage="com.xlf.account.entity"
+        <javaModelGenerator targetPackage="com.xlf.trade.entity"
                             targetProject="./src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -48,7 +48,7 @@
         <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
         <!-- gem  mapper -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.xlf.account.repository.mapper"
+                             targetPackage="com.xlf.trade.repository.mapper"
                              targetProject="./src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
@@ -60,6 +60,7 @@
         <table tableName="account_info_bak" domainObjectName="AccountInfoBakDo" mapperName="AccountInfoBakMapper">
             <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
             <columnOverride column = "create_type" property="createType" javaType="java.lang.Integer"/>
+            <columnOverride column = "backup_flow_status" property="backupFlowStatus" javaType="java.lang.Integer"/>
         </table>
         <table tableName="account_flow" domainObjectName="AccountFlowDo" mapperName="AccountFlowMapper">
             <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
