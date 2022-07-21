@@ -1,16 +1,6 @@
 package com.xlf.trade.web;
 
-import com.xlf.trade.vo.response.AccountFlowRsp;
-import com.xlf.trade.vo.response.QueryAccountInfoRsp;
-import com.xlf.common.response.ApiResult;
-import com.xlf.common.response.PageResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 @RestController
 //@RequestMapping("/account/query")

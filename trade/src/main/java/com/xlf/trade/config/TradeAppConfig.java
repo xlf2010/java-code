@@ -28,16 +28,15 @@ public class TradeAppConfig {
 
     @Bean
     public ThreadPoolExecutor threadPoolExecutor() {
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(
-                5,
+        return new ThreadPoolExecutor(
                 10,
+                20,
                 60,
                 TimeUnit.SECONDS,
                 new LinkedBlockingDeque<>(1000),
                 new BasicThreadFactory.Builder().namingPattern("trade-thread-%d").build(),
                 new ThreadPoolExecutor.CallerRunsPolicy()
         );
-        return executor;
     }
 
 

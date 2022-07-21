@@ -11,7 +11,7 @@ public class TradeHealthController {
     @RequestMapping("health")
     @LogOff
     public String health() {
-        log.info("health check UP");
+//        log.info("health check UP");
         return "UP";
     }
 }

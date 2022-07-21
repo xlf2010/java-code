@@ -1,0 +1,41 @@
+mybatis:
+    mapper-locations: classpath:/mappers/**/*.xml
+
+server:
+    port: 8888
+
+snowFlake:
+    centerId: 2
+    workerId: 1
+
+spring:
+    application:
+        name: xlf-account
+    cache:
+        redis:
+            key-prefix: 'account:'
+            use-key-prefix: true
+    cloud:
+        consul:
+            host: localhost
+            port: 8500
+            discovery:
+                health-check-path: /health
+
+    datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        hikari:
+            maximum-pool-size: 200
+            minimum-idle: 3
+        password: 123456
+        type: com.zaxxer.hikari.HikariDataSource
+        url: jdbc:mysql://127.0.0.1:3306/account?verifyServerCertificate=false&useSSL=false&requireSSL=false&useUnicode=yes&characterEncoding=UTF-8
+        username: root
+
+    redis:
+        host: 127.0.0.1
+        port: 6379
+        jedis:
+            pool:
+                enabled: true
+

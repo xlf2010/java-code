@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/account")
+@RequestMapping("/trade")
 public class TradeController {
 
     @Resource
@@ -20,7 +20,8 @@ public class TradeController {
 
 
     @PostMapping("/recharge")
-    public ApiResult<Object> recharge(@RequestBody @Valid RechargeReq req) {
+    public ApiResult<Object> recharge(@RequestBody @Valid TradeRechargeReq req) {
+        tradeAccountService.recharge(req);
         return ApiResult.success();
     }
 

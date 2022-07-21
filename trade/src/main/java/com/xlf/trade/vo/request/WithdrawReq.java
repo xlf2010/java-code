@@ -1,6 +1,6 @@
 package com.xlf.trade.vo.request;
 
-import com.xlf.trade.enums.PayGateWayEnums;
+import com.xlf.common.enums.PayChannelEnums;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
@@ -16,7 +16,7 @@ public class WithdrawReq {
     /**
      * accountType Enum
      *
-     * @see PayGateWayEnums
+     * @see PayChannelEnums
      */
     @NotNull(message = "accountType can't be null")
     private Integer accountType;

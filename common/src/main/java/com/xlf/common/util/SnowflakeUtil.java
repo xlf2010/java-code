@@ -50,6 +50,10 @@ public class SnowflakeUtil {
         }
     }
 
+    public static String nextIdString() {
+        return Long.toString(nextId());
+    }
+
     /**
      * next id
      *

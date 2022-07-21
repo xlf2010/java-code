@@ -1,12 +1,12 @@
 package com.xlf.trade.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.xlf.trade.TradeBaseTest;
-import com.xlf.trade.vo.response.AccountFlowRsp;
-import com.xlf.trade.vo.response.QueryAccountInfoRsp;
 import com.xlf.common.response.ApiResult;
 import com.xlf.common.response.PageResponse;
 import com.xlf.common.util.JsonUtil;
+import com.xlf.trade.TradeBaseTest;
+import com.xlf.trade.vo.response.AccountFlowRsp;
+import com.xlf.trade.vo.response.QueryAccountInfoRsp;
 import org.junit.Test;
 import org.springframework.util.Assert;
 

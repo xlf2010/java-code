@@ -1,6 +1,7 @@
 package com.xlf.trade;
 
 import com.xlf.common.exception.ErrorCodeEnum;
+import com.xlf.trade.TradeApplication;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;

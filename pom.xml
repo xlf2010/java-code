@@ -12,6 +12,7 @@
         <module>account</module>
         <module>trade</module>
         <module>common</module>
+        <module>account-common</module>
     </modules>
 
     <name>java-code</name>

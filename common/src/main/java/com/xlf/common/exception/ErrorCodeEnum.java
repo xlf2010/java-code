@@ -18,7 +18,7 @@ public enum ErrorCodeEnum {
 
     ACCOUNT_NOT_EXIST(3301, "trade doesn't exist"),
 
-    DATA_PROCESSING(3302,"data processing"),
+    DATA_PROCESSING(3302, "data processing"),
 
     ACCOUNT_STATUS_ERROR(3303, "trade status error"),
 
@@ -28,7 +28,7 @@ public enum ErrorCodeEnum {
 
     TRANSACTION_ERROR(3305, "transaction error"),
 
-    ACCOUNT_HAS_BALANCE_ERROR(3306,"trade has balance"),
+    ACCOUNT_HAS_BALANCE_ERROR(3306, "trade has balance"),
 
     BALANCE_NOT_ENOUGH_EXIST_ERROR(3307, "balance not enough"),
 
@@ -37,6 +37,12 @@ public enum ErrorCodeEnum {
     FROZEN_ERROR(3309, "frozen error"),
 
     UNFROZEN_ERROR(3310, "unfrozen error"),
+
+    ACCOUNT_ERROR(3400, "query account error"),
+
+    PAY_ERROR(3500, "pay error"),
+
+    NETWORK_ERROR(3600, "network error"),
     ;
 
     private final int code;
