@@ -176,10 +176,31 @@ public enum CurrencyTypeEnums {
     WON("WON", "₩", 2),
     ;
 
+    private static final Map<String, CurrencyTypeEnums> TYPE_MAP = new HashMap<>();
+
+    static {
+        for (CurrencyTypeEnums currency : CurrencyTypeEnums.values()) {
+            TYPE_MAP.put(currency.code, currency);
+        }
+    }
+
     private String code;
     private String symbol;
     private Integer decimalDigits;
 
+    CurrencyTypeEnums(String code, String symbol, Integer decimalDigits) {
+
+        this.code = code;
+        this.symbol = symbol;
+        this.decimalDigits = decimalDigits;
+    }
+
+    public static CurrencyTypeEnums parse(String code) {
+        if (StringUtils.isBlank(code)) {
+            return null;
+        }
+        return TYPE_MAP.get(code);
+    }
 
     public String getCode() {
         return code;
@@ -191,29 +212,6 @@ public enum CurrencyTypeEnums {
 
     public Integer getDecimalDigits() {
         return decimalDigits;
-    }
-
-
-    CurrencyTypeEnums(String code, String symbol, Integer decimalDigits) {
-
-        this.code = code;
-        this.symbol = symbol;
-        this.decimalDigits = decimalDigits;
-    }
-
-    private static final Map<String, CurrencyTypeEnums> TYPE_MAP = new HashMap<>();
-
-    static {
-        for (CurrencyTypeEnums currency : CurrencyTypeEnums.values()) {
-            TYPE_MAP.put(currency.code, currency);
-        }
-    }
-
-    public static CurrencyTypeEnums parse(String code) {
-        if (StringUtils.isBlank(code)) {
-            return null;
-        }
-        return TYPE_MAP.get(code);
     }
 
 

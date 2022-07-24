@@ -1,8 +1,8 @@
 package com.xlf.account.mapstruct.mapper;
 
+import com.xlf.account.common.response.QueryAccountInfoRsp;
 import com.xlf.account.entity.AccountInfoBakDo;
 import com.xlf.account.entity.AccountInfoDo;
-import com.xlf.account.common.response.QueryAccountInfoRsp;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

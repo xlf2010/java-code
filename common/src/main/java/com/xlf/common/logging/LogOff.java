@@ -7,5 +7,6 @@ import java.lang.annotation.*;
 @Documented
 public @interface LogOff {
     boolean requestLog() default false; // 请求日志关闭
+
     boolean responseLog() default false; // 响应日志关闭
 }

@@ -1,10 +1,12 @@
 package com.xlf.account.repository;
 
+import com.google.common.collect.Lists;
 import com.xlf.account.entity.AccountInfoBakDo;
 import com.xlf.account.entity.AccountInfoBakDoExample;
 import com.xlf.account.entity.AccountInfoDo;
 import com.xlf.account.entity.AccountInfoDoExample;
 import com.xlf.account.enums.AccountStatusEnums;
+import com.xlf.account.enums.BackupFlowStatusEnums;
 import com.xlf.account.repository.mapper.AccountInfoBakMapper;
 import com.xlf.account.repository.mapper.AccountInfoExtMapper;
 import com.xlf.account.repository.mapper.AccountInfoMapper;
@@ -12,9 +14,6 @@ import com.xlf.common.exception.ErrorCodeEnum;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -85,15 +84,11 @@ public class AccountInfoRepository {
         }
     }
 
-    public List<AccountInfoBakDo> queryYesterdayAccountInfoBackup(Long startId, Integer limit) {
-        LocalDateTime yesterdayStart = LocalDate.now().minusDays(1).atTime(0, 0, 0);
-        LocalDateTime yesterdayEnd = LocalDate.now().minusDays(1).atTime(23, 59, 59);
+    public List<AccountInfoBakDo> queryWaitBackupAccountInfoBackup(Long startId, Integer limit) {
 
         AccountInfoBakDoExample example = new AccountInfoBakDoExample();
-        example.createCriteria().andIdGreaterThan(startId).andUpdateTimeBetween(
-                Date.from(yesterdayStart.atZone(ZoneId.systemDefault()).toInstant()),
-                Date.from(yesterdayEnd.atZone(ZoneId.systemDefault()).toInstant())
-        );
+        example.createCriteria().andIdGreaterThan(startId)
+                .andBackupFlowStatusIn(Lists.newArrayList(BackupFlowStatusEnums.NONE.getCode(), BackupFlowStatusEnums.BAKUPING.getCode()));
         example.setOrderByClause(" id limit " + limit);
         return accountInfoBakMapper.selectByExample(example);
     }
@@ -102,13 +97,14 @@ public class AccountInfoRepository {
         return accountInfoBakMapper.selectByPrimaryKey(accountId);
     }
 
-    public boolean updateBakupFlowStatus(Long accountId, Integer fromStatus, Integer toStatus) {
+    public boolean updateBackupFlowStatus(Long accountId, Integer fromStatus, Integer toStatus) {
         AccountInfoBakDo accountInfoBakDo = new AccountInfoBakDo();
         accountInfoBakDo.setBackupFlowStatus(toStatus);
+        accountInfoBakDo.setUpdateTime(new Date());
 
         AccountInfoBakDoExample example = new AccountInfoBakDoExample();
         example.createCriteria().andIdEqualTo(accountId).andBackupFlowStatusEqualTo(fromStatus);
 
-        return accountInfoBakMapper.updateByExample(accountInfoBakDo, example) == 1;
+        return accountInfoBakMapper.updateByExampleSelective(accountInfoBakDo, example) == 1;
     }
 }

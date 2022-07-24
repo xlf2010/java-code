@@ -2,9 +2,10 @@ package com.xlf.account.repository.mapper;
 
 import com.xlf.account.entity.AccountFlowBakDo;
 import com.xlf.account.entity.AccountFlowBakDoExample;
-import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 @Mapper
 public interface AccountFlowBakMapper {

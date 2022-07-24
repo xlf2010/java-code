@@ -12,7 +12,7 @@
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
         <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
 
         <commentGenerator>
             <property name="suppressDate" value="false"/>
@@ -54,12 +54,13 @@
         </javaClientGenerator>
 
         <table tableName="pay_order" domainObjectName="PayOrderDo" mapperName="PayOrderMapper">
-            <columnOverride column = "pay_channel" property="payChannel" javaType="java.lang.Integer"/>
-            <columnOverride column = "operate_type" property="operateType" javaType="java.lang.Integer"/>
-            <columnOverride column = "request_url" property="requestUrl" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <columnOverride column = "request_param" property="requestParam" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <columnOverride column = "response" property="response" javaType="java.lang.String" jdbcType="VARCHAR"/>
-            <columnOverride column = "notify" property="notify" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <columnOverride column="pay_channel" property="payChannel" javaType="java.lang.Integer"/>
+            <columnOverride column="operate_type" property="operateType" javaType="java.lang.Integer"/>
+            <columnOverride column="request_url" property="requestUrl" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <columnOverride column="request_param" property="requestParam" javaType="java.lang.String"
+                            jdbcType="VARCHAR"/>
+            <columnOverride column="response" property="response" javaType="java.lang.String" jdbcType="VARCHAR"/>
+            <columnOverride column="notify" property="notify" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </table>
     </context>
 </generatorConfiguration>

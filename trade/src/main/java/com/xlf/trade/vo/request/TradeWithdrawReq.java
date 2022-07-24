@@ -6,7 +6,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class TradeRechargeReq extends BaseReq {
+public class TradeWithdrawReq extends BaseReq {
 
     @NotNull(message = "amount can't be null")
     @Min(value = 1, message = "recharge amount must be greater 0")

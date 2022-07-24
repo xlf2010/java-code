@@ -2,16 +2,16 @@ package com.xlf.account.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.xlf.account.BaseTest;
-import com.xlf.account.entity.AccountFlowDo;
-import com.xlf.account.entity.AccountInfoDo;
-import com.xlf.common.enums.AccountCreateTypeEnums;
-import com.xlf.account.enums.AccountFlowOperateTypeEnums;
-import com.xlf.common.enums.AccountTypeEnums;
-import com.xlf.common.enums.CurrencyTypeEnums;
-import com.xlf.account.repository.AccountFlowRepository;
-import com.xlf.account.repository.AccountInfoRepository;
 import com.xlf.account.common.request.*;
 import com.xlf.account.common.response.CreateAccountRsp;
+import com.xlf.account.entity.AccountFlowDo;
+import com.xlf.account.entity.AccountInfoDo;
+import com.xlf.account.enums.AccountFlowOperateTypeEnums;
+import com.xlf.account.repository.AccountFlowRepository;
+import com.xlf.account.repository.AccountInfoRepository;
+import com.xlf.common.enums.AccountCreateTypeEnums;
+import com.xlf.common.enums.AccountTypeEnums;
+import com.xlf.common.enums.CurrencyTypeEnums;
 import com.xlf.common.response.ApiResult;
 import com.xlf.common.util.JsonUtil;
 import com.xlf.common.util.SnowflakeUtil;
@@ -26,14 +26,12 @@ import java.util.List;
 
 public class AccountControllerTest extends BaseTest {
 
+    AccountTypeEnums accountTypeEnums = AccountTypeEnums.WECHAT_PAY;
+    String appId = "account_test";
     @Resource
     private AccountInfoRepository accountInfoRepository;
     @Resource
     private AccountFlowRepository accountFlowRepository;
-
-    AccountTypeEnums accountTypeEnums = AccountTypeEnums.WECHAT_PAY;
-
-    String appId = "account_test";
 
     @Test
     public void testCreateAccount() throws Exception {
@@ -101,7 +99,7 @@ public class AccountControllerTest extends BaseTest {
     @Test
     public void testWithdraw() throws Exception {
         AccountInfoDo before = getAccountInfoDo(userId1);
-        long amount = 100L;
+        long amount = 70000L;
 
         WithdrawReq req = new WithdrawReq();
         req.setAppId(appId);

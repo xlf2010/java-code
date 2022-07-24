@@ -13,9 +13,10 @@ public class BackupFlowDailyTask {
     @Resource
     private AccountService accountService;
 
-    @Scheduled(cron = "0 36 13 * * ?")
+    @Scheduled(cron = "0 0/5 * * * ?")
     public void backup() {
         log.info("starting back up account flow...");
         accountService.checkAndBackupAccountFlow();
+        log.info("end back up account flow...");
     }
 }

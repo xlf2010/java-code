@@ -1,13 +1,16 @@
 package com.xlf.trade.repository;
 
+import com.xlf.common.enums.PayChannelEnums;
 import com.xlf.trade.entity.PayOrderDo;
 import com.xlf.trade.entity.PayOrderDoExample;
+import com.xlf.trade.enums.PayOrderOperateTypeEnums;
 import com.xlf.trade.enums.PayOrderStatusEnums;
 import com.xlf.trade.repository.mapper.PayOrderMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Repository
 public class PayOrderRepository {
@@ -31,6 +34,14 @@ public class PayOrderRepository {
 
     public PayOrderDo queryPayOrder(Long orderId) {
         return payOrderMapper.selectByPrimaryKey(orderId);
+    }
+
+    public List<PayOrderDo> queryPayOrder(String transId, PayOrderOperateTypeEnums operateTypeEnums, PayChannelEnums payChannelEnums) {
+        PayOrderDoExample example = new PayOrderDoExample();
+        example.createCriteria().andTransIdEqualTo(transId)
+                .andOperateTypeEqualTo(operateTypeEnums.getCode())
+                .andPayChannelEqualTo(payChannelEnums.getCode());
+        return payOrderMapper.selectByExample(example);
     }
 
     public boolean afterCalling(Long orderId, String response, Integer fromStatus, Integer toStatus, String remark) {

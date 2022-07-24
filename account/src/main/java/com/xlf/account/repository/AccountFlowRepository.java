@@ -32,7 +32,7 @@ public class AccountFlowRepository {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void moveAccountFlowToBak(List<AccountFlowDo> accountFlowDos, List<AccountFlowBakDo> accountFlowBakDos) {
+    public void moveAccountFlowToBack(List<AccountFlowDo> accountFlowDos, List<AccountFlowBakDo> accountFlowBakDos) {
         for (AccountFlowBakDo accountFlowBakDo : accountFlowBakDos) {
             accountFlowBakMapper.insertSelective(accountFlowBakDo);
         }

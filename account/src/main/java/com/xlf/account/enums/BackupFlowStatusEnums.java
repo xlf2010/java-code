@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum BakupFlowStatusEnums {
+public enum BackupFlowStatusEnums {
     NONE(0),
     BAKUPING(1),
     FINISH(2),
@@ -14,8 +14,8 @@ public enum BakupFlowStatusEnums {
     private final int code;
 
 
-    public static BakupFlowStatusEnums parse(int code) {
-        for (BakupFlowStatusEnums enums : BakupFlowStatusEnums.values()) {
+    public static BackupFlowStatusEnums parse(int code) {
+        for (BackupFlowStatusEnums enums : BackupFlowStatusEnums.values()) {
             if (enums.getCode() == code) {
                 return enums;
             }

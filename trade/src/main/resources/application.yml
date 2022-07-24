@@ -1,76 +1,88 @@
 mybatis:
-    mapper-locations: classpath:/mappers/**/*.xml
+  mapper-locations: classpath:/mappers/**/*.xml
 resilience4j:
-    circuitbreaker:
-        configs:
-            default:
-                failureRateThreshold: 50
-                slowCallDurationThreshold: PT5S
-                slowCallRateThreshold: 10
-        instances:
-            trade:
-                base-config: default
-        metrics:
-            enabled: true
-    retry:
-        configs:
-            default:
-                maxRetryAttempts: 2
-                waitDuration: 100
-    ratelimiter:
-        configs:
-            default:
-                registerHealthIndicator: false
-                limitForPeriod: 10
-                limitRefreshPeriod: 1s
-                timeoutDuration: 0
-                eventConsumerBufferSize: 100
+  circuitbreaker:
+    configs:
+      default:
+        failureRateThreshold: 50
+        slowCallDurationThreshold: PT5S
+        slowCallRateThreshold: 10
+    instances:
+      trade:
+        base-config: default
+    metrics:
+      enabled: true
+  retry:
+    configs:
+      default:
+        maxRetryAttempts: 3
+        waitDuration: 1000
+        retryExceptions: java.lang.Exception
+  ratelimiter:
+    configs:
+      default:
+        registerHealthIndicator: false
+        limitForPeriod: 10
+        limitRefreshPeriod: 1s
+        timeoutDuration: 0
+        eventConsumerBufferSize: 100
 feign:
-    httpclient:
-        max-connections: 10
-        max-connections-per-route: 8
-    client:
-        config:
-            default:
-                connectTimeout: 10000
-                readTimeout: 5000
-                loggerLevel: full
-    circuitbreaker:
-        enabled: true
-logging:
-    level:
-        com.xlf.trade.remote: debug
+  client:
+    config:
+      default:
+        connectTimeout: 10000
+        readTimeout: 5000
+        loggerLevel: full
+  circuitbreaker:
+    enabled: true
 
+# 对当前实例的重试次数
+ribbon:
+  maxAutoRetries: 1
+  # 切换实例的重试次数
+  maxAutoRetriesNextServer: 3
+  # 对所有操作请求都进行重试
+  ribbon.okToRetryOnAllOperations: true
+
+
+logging:
+  level:
+    com.xlf.trade.remote: debug
+    org.springframework.cloud.loadbalancer: debug
 server:
-    port: 8889
+  port: 8889
 snowFlake:
-    centerId: 3
-    workerId: 1
+  centerId: 3
+  workerId: 1
 spring:
-    application:
-        name: xlf-trade
-    cache:
-        redis:
-            key-prefix: 'trade:'
-            use-key-prefix: true
-    cloud:
-        consul:
-            discovery:
-                health-check-path: /health
-            host: localhost
-            port: 8500
-    datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        hikari:
-            maximum-pool-size: 200
-            minimum-idle: 3
-        password: 123456
-        type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://127.0.0.1:3306/trade?verifyServerCertificate=false&useSSL=false&requireSSL=false&useUnicode=yes&characterEncoding=UTF-8
-        username: root
+  application:
+    name: xlf-trade
+  cache:
     redis:
-        host: 127.0.0.1
-        jedis:
-            pool:
-                enabled: true
-        port: 6379
+      key-prefix: 'trade:'
+      use-key-prefix: true
+  cloud:
+    consul:
+      discovery:
+        health-check-path: /health
+        health-check-interval: 20s
+        health-check-critical-timeout: 10m
+        deregister: true
+      host: localhost
+      port: 8500
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 200
+      minimum-idle: 3
+    password: 123456
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://127.0.0.1:3306/trade?verifyServerCertificate=false&useSSL=false&requireSSL=false&useUnicode=yes&characterEncoding=UTF-8
+    username: root
+  redis:
+    host: 127.0.0.1
+    jedis:
+      pool:
+        enabled: true
+    port: 6379
+

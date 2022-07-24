@@ -1,10 +1,10 @@
 package com.xlf.account.service.impl;
 
+import com.xlf.account.common.request.*;
 import com.xlf.account.entity.AccountFlowDo;
 import com.xlf.account.entity.AccountInfoDo;
 import com.xlf.account.enums.AccountFlowOperateTypeEnums;
 import com.xlf.account.service.AccountFlowService;
-import com.xlf.account.common.request.*;
 import com.xlf.common.util.SnowflakeUtil;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +22,7 @@ public class AccountFlowServiceImpl implements AccountFlowService {
         accountFlow.setAmount(req.getAmount());
         accountFlow.setCurrencyType(accountInfoDo.getCurrencyType());
         accountFlow.setBalance(accountInfoDo.getBalance() + req.getAmount());
-        accountFlow.setFrozenBalance(accountFlow.getFrozenBalance());
+        accountFlow.setFrozenBalance(accountInfoDo.getFrozenBalance());
         accountFlow.setAppId(req.getAppId());
         accountFlow.setOrderTime(req.getOrderTime());
         return accountFlow;
@@ -36,7 +36,7 @@ public class AccountFlowServiceImpl implements AccountFlowService {
         accountFlow.setAmount(req.getAmount());
         accountFlow.setCurrencyType(accountInfoDo.getCurrencyType());
         accountFlow.setBalance(accountInfoDo.getBalance() - req.getAmount());
-        accountFlow.setFrozenBalance(accountFlow.getFrozenBalance());
+        accountFlow.setFrozenBalance(accountInfoDo.getFrozenBalance());
         accountFlow.setAppId(req.getAppId());
         accountFlow.setOrderTime(req.getOrderTime());
         return accountFlow;
@@ -88,7 +88,7 @@ public class AccountFlowServiceImpl implements AccountFlowService {
         accountFlow.setOperateType(operateTypeEnums.getCode());
         accountFlow.setCurrencyType(accountInfoDo.getCurrencyType());
         accountFlow.setBalance(accountInfoDo.getBalance());
-        accountFlow.setFrozenBalance(accountFlow.getFrozenBalance());
+        accountFlow.setFrozenBalance(accountInfoDo.getFrozenBalance());
         accountFlow.setAppId(appId);
         accountFlow.setOrderTime(orderTime);
         return accountFlow;

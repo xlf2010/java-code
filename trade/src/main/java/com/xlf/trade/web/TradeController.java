@@ -26,22 +26,26 @@ public class TradeController {
     }
 
     @PostMapping("/withdraw")
-    public ApiResult<Object> withdraw(@RequestBody @Valid WithdrawReq req) {
+    public ApiResult<Object> withdraw(@RequestBody @Valid TradeWithdrawReq req) {
+        tradeAccountService.withdraw(req);
         return ApiResult.success();
     }
 
     @PostMapping("/transaction")
-    public ApiResult<Object> transaction(@RequestBody @Valid TransactionReq req) {
+    public ApiResult<Object> transaction(@RequestBody @Valid TradeTransactionReq req) {
+        tradeAccountService.transaction(req);
         return ApiResult.success();
     }
 
     @PostMapping("/frozen")
-    public ApiResult<Object> frozen(@RequestBody @Valid FrozenReq req) {
+    public ApiResult<Object> frozen(@RequestBody @Valid TradeFrozenReq req) {
+        tradeAccountService.frozen(req);
         return ApiResult.success();
     }
 
     @PostMapping("/unfrozen")
-    public ApiResult<Object> unfrozen(@RequestBody @Valid UnfrozenReq req) {
+    public ApiResult<Object> unfrozen(@RequestBody @Valid TradeUnfrozenReq req) {
+        tradeAccountService.unfrozen(req);
         return ApiResult.success();
     }
 

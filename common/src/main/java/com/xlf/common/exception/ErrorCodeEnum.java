@@ -16,7 +16,7 @@ public enum ErrorCodeEnum {
 
     TOKEN_EXPIRED(2301, "token expire"),
 
-    ACCOUNT_NOT_EXIST(3301, "trade doesn't exist"),
+    ACCOUNT_NOT_EXIST(3301, "account doesn't exist"),
 
     DATA_PROCESSING(3302, "data processing"),
 

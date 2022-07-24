@@ -8,10 +8,9 @@ import com.xlf.trade.entity.PayOrderDo;
 import com.xlf.trade.enums.PayOrderOperateTypeEnums;
 import com.xlf.trade.remote.third.AbstractThirdRemoteService;
 import com.xlf.trade.remote.third.ThirdRemoteAnnotation;
-import com.xlf.trade.remote.third.wechat.vo.WechatBaseResult;
+import com.xlf.trade.remote.third.wechat.vo.*;
 import com.xlf.trade.repository.PayOrderRepository;
-import com.xlf.trade.vo.request.CreateTradeAccountReq;
-import com.xlf.trade.vo.request.TradeRechargeReq;
+import com.xlf.trade.vo.request.*;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -25,24 +24,64 @@ public class WechatRemoteService extends AbstractThirdRemoteService {
     private PayOrderRepository payOrderRepository;
 
     @Override
-    public <T> T createAccount(CreateTradeAccountReq req, PayOrderDo payOrderDo, Class<T> resultClass) {
+    public WechatCreateAccountResult createAccount(CreateTradeAccountReq req, PayOrderDo payOrderDo) {
         payOrderDo.setRequestUrl("https://test.wechat.com/open_account");
         payOrderDo.setRequestParam(JsonUtil.toJsonString(req));
         payOrderRepository.insert(payOrderDo);
         ApiResult<String> apiResult = callPay(payOrderDo);
         afterCallingPayChannel(payOrderDo, apiResult);
 
-        return JsonUtil.fromJson(apiResult.getData(), resultClass);
+        return JsonUtil.fromJson(apiResult.getData(), WechatCreateAccountResult.class);
     }
 
     @Override
-    public <T> T recharge(TradeRechargeReq req, PayOrderDo payOrderDo, Class<T> resultClass) {
+    public WechatRechargeResult recharge(TradeRechargeReq req, PayOrderDo payOrderDo) {
         payOrderDo.setRequestUrl("https://test.wechat.com/recharge");
         payOrderDo.setRequestParam(JsonUtil.toJsonString(req));
         payOrderRepository.insert(payOrderDo);
         ApiResult<String> apiResult = callPay(payOrderDo);
         afterCallingPayChannel(payOrderDo, apiResult);
-        return JsonUtil.fromJson(apiResult.getData(), resultClass);
+        return JsonUtil.fromJson(apiResult.getData(), WechatRechargeResult.class);
+    }
+
+    @Override
+    public WechatWithdrawResult withdraw(TradeWithdrawReq req, PayOrderDo payOrderDo) {
+        payOrderDo.setRequestUrl("https://test.wechat.com/withdraw");
+        payOrderDo.setRequestParam(JsonUtil.toJsonString(req));
+        payOrderRepository.insert(payOrderDo);
+        ApiResult<String> apiResult = callPay(payOrderDo);
+        afterCallingPayChannel(payOrderDo, apiResult);
+        return JsonUtil.fromJson(apiResult.getData(), WechatWithdrawResult.class);
+    }
+
+    @Override
+    public WechatTransactionResult transaction(TradeTransactionReq req, PayOrderDo payOrderDo) {
+        payOrderDo.setRequestUrl("https://test.wechat.com/transaction");
+        payOrderDo.setRequestParam(JsonUtil.toJsonString(req));
+        payOrderRepository.insert(payOrderDo);
+        ApiResult<String> apiResult = callPay(payOrderDo);
+        afterCallingPayChannel(payOrderDo, apiResult);
+        return JsonUtil.fromJson(apiResult.getData(), WechatTransactionResult.class);
+    }
+
+    @Override
+    public WechatFrozenResult frozen(TradeFrozenReq req, PayOrderDo payOrderDo) {
+        payOrderDo.setRequestUrl("https://test.wechat.com/frozen");
+        payOrderDo.setRequestParam(JsonUtil.toJsonString(req));
+        payOrderRepository.insert(payOrderDo);
+        ApiResult<String> apiResult = callPay(payOrderDo);
+        afterCallingPayChannel(payOrderDo, apiResult);
+        return JsonUtil.fromJson(apiResult.getData(), WechatFrozenResult.class);
+    }
+
+    @Override
+    public WechatUnfrozenResult unfrozen(TradeUnfrozenReq req, PayOrderDo payOrderDo) {
+        payOrderDo.setRequestUrl("https://test.wechat.com/unfrozen");
+        payOrderDo.setRequestParam(JsonUtil.toJsonString(req));
+        payOrderRepository.insert(payOrderDo);
+        ApiResult<String> apiResult = callPay(payOrderDo);
+        afterCallingPayChannel(payOrderDo, apiResult);
+        return JsonUtil.fromJson(apiResult.getData(), WechatUnfrozenResult.class);
     }
 
     private ApiResult<String> callPay(PayOrderDo payOrderDo) {

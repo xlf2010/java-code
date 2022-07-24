@@ -7,14 +7,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class UnfrozenReq {
-    @NotBlank(message = "transId can't be blank")
-    private String transId;
-    private String frozenTransId;
-    @NotBlank(message = "userId can't be blank")
-    private String userId;
-    @NotNull(message = "accountType can't be null")
-    private Integer accountType;
+public class TradeTransactionReq extends BaseReq {
+
+    @NotBlank(message = "toUserId can't be blank")
+    private String toUserId;
+
     @NotNull(message = "amount can't be null")
     @Min(value = 1, message = "recharge amount must be greater 0")
     private Long amount;

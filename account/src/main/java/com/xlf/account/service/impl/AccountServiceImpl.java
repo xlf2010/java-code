@@ -1,31 +1,34 @@
 package com.xlf.account.service.impl;
 
-import com.xlf.common.enums.AccountCreateTypeEnums;
-import com.xlf.common.enums.AccountTypeEnums;
-import com.xlf.common.enums.CurrencyTypeEnums;
-import com.xlf.common.lock.RedisLockService;
+import com.xlf.account.common.request.*;
+import com.xlf.account.common.response.CreateAccountRsp;
 import com.xlf.account.entity.AccountFlowBakDo;
 import com.xlf.account.entity.AccountFlowDo;
 import com.xlf.account.entity.AccountInfoBakDo;
 import com.xlf.account.entity.AccountInfoDo;
-import com.xlf.account.enums.*;
+import com.xlf.account.enums.AccountFlowOperateTypeEnums;
+import com.xlf.account.enums.BackupFlowStatusEnums;
 import com.xlf.account.mapstruct.mapper.AccountFlowMapper;
 import com.xlf.account.repository.AccountFlowRepository;
 import com.xlf.account.repository.AccountInfoRepository;
 import com.xlf.account.service.AccountBalanceService;
 import com.xlf.account.service.AccountInfoService;
 import com.xlf.account.service.AccountService;
-import com.xlf.account.common.request.*;
-import com.xlf.account.common.response.CreateAccountRsp;
+import com.xlf.common.enums.AccountCreateTypeEnums;
+import com.xlf.common.enums.AccountTypeEnums;
+import com.xlf.common.enums.CurrencyTypeEnums;
 import com.xlf.common.exception.BusinessException;
 import com.xlf.common.exception.ErrorCodeEnum;
+import com.xlf.common.lock.RedisLockService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -162,7 +165,7 @@ public class AccountServiceImpl implements AccountService {
             return;
         }
         threadPoolExecutor.execute(() -> {
-            moveAccountFlowToBak(accountInfoRepository.queryAccountInfoBakDo(accountInfoDo.getId()));
+            moveAccountFlowToBack(accountInfoRepository.queryAccountInfoBakDo(accountInfoDo.getId()));
         });
     }
 
@@ -171,27 +174,37 @@ public class AccountServiceImpl implements AccountService {
         Long startId = 0L;
         Integer limit = 100;
         while (true) {
-            List<AccountInfoBakDo> accountInfoBakDos = accountInfoRepository.queryYesterdayAccountInfoBackup(startId, limit);
+            List<AccountInfoBakDo> accountInfoBakDos = accountInfoRepository.queryWaitBackupAccountInfoBackup(startId, limit);
             if (CollectionUtils.isEmpty(accountInfoBakDos)) {
                 break;
             }
             for (AccountInfoBakDo accountInfoBakDo : accountInfoBakDos) {
-                moveAccountFlowToBak(accountInfoBakDo);
+                moveAccountFlowToBack(accountInfoBakDo);
             }
             startId = accountInfoBakDos.get(accountInfoBakDos.size() - 1).getId();
         }
     }
 
 
-    private void moveAccountFlowToBak(AccountInfoBakDo accountInfoBakDo) {
+    private void moveAccountFlowToBack(AccountInfoBakDo accountInfoBakDo) {
         if (Objects.isNull(accountInfoBakDo)) {
             return;
         }
-        if (accountInfoBakDo.getBackupFlowStatus() != BakupFlowStatusEnums.NONE.getCode()) {
+        Long accountId = accountInfoBakDo.getId();
+        if (accountInfoBakDo.getBackupFlowStatus() == BackupFlowStatusEnums.BAKUPING.getCode()) {
+            if (new Date().before(DateUtils.addDays(accountInfoBakDo.getUpdateTime(), 1))) {
+                return;
+            } else if (!accountInfoRepository.updateBackupFlowStatus(accountId, BackupFlowStatusEnums.BAKUPING.getCode(), BackupFlowStatusEnums.NONE.getCode())) {
+                return;
+            } else {
+                accountInfoBakDo.setBackupFlowStatus(BackupFlowStatusEnums.NONE.getCode());
+            }
+        }
+
+        if (accountInfoBakDo.getBackupFlowStatus() != BackupFlowStatusEnums.NONE.getCode()) {
             return;
         }
-        Long accountId = accountInfoBakDo.getId();
-        if (!accountInfoRepository.updateBakupFlowStatus(accountId, BakupFlowStatusEnums.NONE.getCode(), BakupFlowStatusEnums.BAKUPING.getCode())) {
+        if (!accountInfoRepository.updateBackupFlowStatus(accountId, BackupFlowStatusEnums.NONE.getCode(), BackupFlowStatusEnums.BAKUPING.getCode())) {
             return;
         }
 
@@ -209,11 +222,11 @@ public class AccountServiceImpl implements AccountService {
             for (AccountFlowDo accountFlowDo : accountFlowDos) {
                 accountFlowBakDos.add(AccountFlowMapper.INSTANCE.toAccountFlowBakDo(accountFlowDo));
             }
-            accountFlowRepository.moveAccountFlowToBak(accountFlowDos, accountFlowBakDos);
+            accountFlowRepository.moveAccountFlowToBack(accountFlowDos, accountFlowBakDos);
             startId = accountFlowDos.get(accountFlowDos.size() - 1).getFlowId();
         }
 
-        accountInfoRepository.updateBakupFlowStatus(accountId, BakupFlowStatusEnums.BAKUPING.getCode(), BakupFlowStatusEnums.FINISH.getCode());
+        accountInfoRepository.updateBackupFlowStatus(accountId, BackupFlowStatusEnums.BAKUPING.getCode(), BackupFlowStatusEnums.FINISH.getCode());
     }
 
     private boolean dontHasFlowSuccess(String transId, AccountFlowOperateTypeEnums operateTypeEnums) {

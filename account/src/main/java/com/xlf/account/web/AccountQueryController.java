@@ -1,8 +1,8 @@
 package com.xlf.account.web;
 
-import com.xlf.account.service.AccountQueryService;
 import com.xlf.account.common.response.AccountFlowRsp;
 import com.xlf.account.common.response.QueryAccountInfoRsp;
+import com.xlf.account.service.AccountQueryService;
 import com.xlf.common.response.ApiResult;
 import com.xlf.common.response.PageResponse;
 import org.springframework.web.bind.annotation.GetMapping;

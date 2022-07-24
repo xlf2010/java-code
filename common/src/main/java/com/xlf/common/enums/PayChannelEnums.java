@@ -3,9 +3,6 @@ package com.xlf.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
 public enum PayChannelEnums {

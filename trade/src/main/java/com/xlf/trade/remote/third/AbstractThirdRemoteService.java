@@ -1,5 +1,6 @@
 package com.xlf.trade.remote.third;
 
+import com.xlf.common.exception.ErrorCodeEnum;
 import com.xlf.common.response.ApiResult;
 import com.xlf.common.util.JsonUtil;
 import com.xlf.common.util.SnowflakeUtil;
@@ -42,8 +43,14 @@ public abstract class AbstractThirdRemoteService implements ThirdRemoteService {
             if (StringUtils.isNotBlank(remark)) {
                 payOrderDo.setRemark(remark);
             }
+        } else {
+            throw ErrorCodeEnum.SERVICE_BUSY_ERROR.newException();
         }
-        return updateSuccess;
+
+        if (!apiResult.isSuccess()) {
+            throw ErrorCodeEnum.PAY_ERROR.newException();
+        }
+        return true;
     }
 
 
