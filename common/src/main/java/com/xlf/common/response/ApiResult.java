@@ -44,6 +44,10 @@ public class ApiResult<T> implements Serializable {
         return ApiResult.newInstant().setCode(code).setMsg(message).setSuccess(true).setData(data);
     }
 
+    public static <T> ApiResult<T> fail(int code, String message) {
+        return ApiResult.newInstant().setCode(code).setMsg(message).setSuccess(false);
+    }
+
     public static <T> ApiResult<T> fail(int code, String message, T data) {
         return ApiResult.newInstant().setCode(code).setMsg(message).setSuccess(false).setData(data);
     }

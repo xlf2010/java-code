@@ -1,7 +1,7 @@
 package com.xlf.account.service;
 
-import com.xlf.account.vo.request.*;
-import com.xlf.account.vo.response.CreateAccountRsp;
+import com.xlf.account.common.request.*;
+import com.xlf.account.common.response.CreateAccountRsp;
 
 public interface AccountService {
     CreateAccountRsp createAccount(CreateAccountReq req);
@@ -12,5 +12,11 @@ public interface AccountService {
 
     void transaction(TransactionReq req);
 
+    void frozen(FrozenReq req);
+
+    void unfrozen(UnfrozenReq req);
+
     void deleteAccount(DeleteAccountReq req);
+
+    void checkAndBackupAccountFlow();
 }

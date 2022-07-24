@@ -10,4 +10,8 @@ public interface AccountInfoExtMapper {
     AccountInfoDo queryAccountInfoForUpdate(@Param("userId") String userId, @Param("accountType") Integer accountType);
 
     int incrBalance(@Param("accountId") Long accountId, @Param("amount") Long amount);
+
+    int frozen(@Param("accountId") Long accountId, @Param("amount") Long amount);
+
+    int unfrozen(@Param("accountId") Long accountId, @Param("amount") Long amount);
 }

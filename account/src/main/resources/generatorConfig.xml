@@ -12,7 +12,7 @@
         <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
         <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
-        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
 
         <commentGenerator>
             <property name="suppressDate" value="false"/>
@@ -54,13 +54,23 @@
         </javaClientGenerator>
 
         <table tableName="account_info" domainObjectName="AccountInfoDo" mapperName="AccountInfoMapper">
-            <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
-            <columnOverride column = "create_type" property="createType" javaType="java.lang.Integer"/>
+            <columnOverride column="account_type" property="accountType" javaType="java.lang.Integer"/>
+            <columnOverride column="create_type" property="createType" javaType="java.lang.Integer"/>
+        </table>
+        <table tableName="account_info_bak" domainObjectName="AccountInfoBakDo" mapperName="AccountInfoBakMapper">
+            <columnOverride column="account_type" property="accountType" javaType="java.lang.Integer"/>
+            <columnOverride column="create_type" property="createType" javaType="java.lang.Integer"/>
+            <columnOverride column="backup_flow_status" property="backupFlowStatus" javaType="java.lang.Integer"/>
         </table>
         <table tableName="account_flow" domainObjectName="AccountFlowDo" mapperName="AccountFlowMapper">
-            <columnOverride column = "account_type" property="accountType" javaType="java.lang.Integer"/>
-            <columnOverride column = "to_account_type" property="toAccountType" javaType="java.lang.Integer"/>
-            <columnOverride column = "operate_type" property="operateType" javaType="java.lang.Integer"/>
+            <columnOverride column="account_type" property="accountType" javaType="java.lang.Integer"/>
+            <columnOverride column="to_account_type" property="toAccountType" javaType="java.lang.Integer"/>
+            <columnOverride column="operate_type" property="operateType" javaType="java.lang.Integer"/>
+        </table>
+        <table tableName="account_flow_bak" domainObjectName="AccountFlowBakDo" mapperName="AccountFlowBakMapper">
+            <columnOverride column="account_type" property="accountType" javaType="java.lang.Integer"/>
+            <columnOverride column="to_account_type" property="toAccountType" javaType="java.lang.Integer"/>
+            <columnOverride column="operate_type" property="operateType" javaType="java.lang.Integer"/>
         </table>
     </context>
 </generatorConfiguration>

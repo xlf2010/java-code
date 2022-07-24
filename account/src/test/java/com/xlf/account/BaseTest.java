@@ -17,11 +17,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
+import java.util.Map;
 import java.util.Objects;
 
-@SpringBootTest(classes = Application.class)
+@SpringBootTest(classes = AccountApplication.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 public class BaseTest {
+    protected String userId1 = "U1657678518703";
+    protected String userId2 = "U1657711042817";
+
     private MockMvc mockMvc;
 
     @Resource
@@ -32,9 +36,17 @@ public class BaseTest {
         mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
     }
 
+    public String get(String url, Map<String, String> map) throws Exception {
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(url)
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED);
+        if (map != null) {
+            map.forEach(requestBuilder::param);
+        }
+        return executeRequestBuilder(requestBuilder);
+    }
+
     public String post(String url, MultiValueMap<String, String> params) throws Exception {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.post(url)
-//                .contentType(MediaType.APPLICATION_FORM_URLENCODED_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE);
         if (Objects.nonNull(params) && params.size() > 0) {
             requestBuilder.params(params);
@@ -53,6 +65,23 @@ public class BaseTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .content(json);
         return executeRequestBuilder(requestBuilder, expectCode);
+    }
+
+    public String deleteJson(String url, String json) throws Exception {
+        RequestBuilder requestBuilder = MockMvcRequestBuilders.delete(url)
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .content(json);
+        return executeRequestBuilder(requestBuilder, ErrorCodeEnum.SUCCESS.getCode());
+    }
+
+    private String executeRequestBuilder(RequestBuilder requestBuilder) throws Exception {
+        return mockMvc.perform(requestBuilder)
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
     }
 
     private String executeRequestBuilder(RequestBuilder requestBuilder, int expectCode) throws Exception {

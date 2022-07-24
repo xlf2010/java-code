@@ -6,7 +6,7 @@ public enum ErrorCodeEnum {
 
     SUCCESS(0, "success"),
 
-    SERVICE_BUSY_ERROR(1000, "service business,please try again later"),
+    SERVICE_BUSY_ERROR(1000, "lock business,please try again later"),
 
     REQUEST_PARAMS_FAIL(1001, "params error"),
 
@@ -18,15 +18,31 @@ public enum ErrorCodeEnum {
 
     ACCOUNT_NOT_EXIST(3301, "account doesn't exist"),
 
-    DATA_PROCESSING(3302,"data processing"),
+    DATA_PROCESSING(3302, "data processing"),
 
-    ACCOUNT_STATUS_ERROR(3303, "account status error"),
+    ACCOUNT_STATUS_ERROR(3303, "trade status error"),
 
     RECHARGE_ERROR(3303, "recharge error"),
 
     WITHDRAW_ERROR(3304, "withdraw error"),
 
     TRANSACTION_ERROR(3305, "transaction error"),
+
+    ACCOUNT_HAS_BALANCE_ERROR(3306, "trade has balance"),
+
+    BALANCE_NOT_ENOUGH_EXIST_ERROR(3307, "balance not enough"),
+
+    FROZEN_BALANCE_NOT_ENOUGH_EXIST_ERROR(3308, "frozen balance not enough"),
+
+    FROZEN_ERROR(3309, "frozen error"),
+
+    UNFROZEN_ERROR(3310, "unfrozen error"),
+
+    ACCOUNT_ERROR(3400, "query account error"),
+
+    PAY_ERROR(3500, "pay error"),
+
+    NETWORK_ERROR(3600, "network error"),
     ;
 
     private final int code;

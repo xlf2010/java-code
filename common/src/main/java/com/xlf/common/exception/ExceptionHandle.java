@@ -15,7 +15,7 @@ public class ExceptionHandle {
     @ResponseBody
     public ApiResult<Object> handleBindException(BindException e) {
         log.error("handleBindException,", e);
-        return ApiResult.fail(e.getMessage());
+        return ApiResult.fail(ErrorCodeEnum.FAIL.getCode(), e.getMessage());
     }
 
     @ExceptionHandler(BusinessException.class)
